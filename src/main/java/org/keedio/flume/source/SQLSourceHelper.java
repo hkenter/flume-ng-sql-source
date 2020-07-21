@@ -142,7 +142,7 @@ public class SQLSourceHelper {
       return "SELECT " + columnsToSelect + " FROM " + table;
     } else {
       if (customQuery.contains("$@$")) {
-        LOG.info("buildQuery from SelectKeyColumn:" + "SELECT * FROM (" + customQuery.replace("$@$", currentIndex) + " ) WHERE " +
+        LOG.debug("buildQuery from SelectKeyColumn:" + "SELECT * FROM (" + customQuery.replace("$@$", currentIndex) + " ) WHERE " +
                 SelectKeyColumn + " = " + "'" + SelectKey + "'");
         return "SELECT * FROM (" + customQuery.replace("$@$", currentIndex) + " ) WHERE " +
                 SelectKeyColumn + " = " + "'" + SelectKey + "'";
