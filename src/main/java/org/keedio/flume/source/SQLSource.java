@@ -30,6 +30,7 @@ import org.apache.flume.conf.Configurable;
 import org.apache.flume.event.SimpleEvent;
 import org.apache.flume.source.AbstractSource;
 import org.keedio.flume.metrics.SqlSourceCounter;
+import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,8 +107,10 @@ public class SQLSource extends AbstractSource implements Configurable, PollableS
                  * 将状态为S的JOB计入Map
                  */
                 List<String[]> allRows = sqlSourceHelper.getAllRows(result);
+                LOG.info("allRows.size() = " + allRows.size());
                 for (String[] row: allRows) {
-                    if (row.length > 4 && row[5].contains("S")) {
+                    LOG.info(Arrays.toString(row));
+                    if (row.length > 4 && row[4].contains("S")) {
                         String instExec = row[1];
                         String jobStatus = row[4];
                         if (!jobStatusMap.containsKey(instExec)) {
@@ -131,6 +134,7 @@ public class SQLSource extends AbstractSource implements Configurable, PollableS
             /**
              * 将Map中的状态为S数据反复查询确认直到状态产生变化传送到channel
              */
+            Log.info("Jos Status Map NUM = " + jobStatusMap.size());
             List<String[]> updatedRows = new ArrayList<String[]>();
             String currentIndex = sqlSourceHelper.getCurrentIndex();
             sqlSourceHelper.setCurrentIndex("-1");
